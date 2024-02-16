@@ -16,13 +16,13 @@ const getContactById = async (req, res, next) => {
   res.json(contact);
 };
 
-const addNewContact = async (req, res, next) => {
+const createContact = async (req, res, next) => {
   const newContact = await contactsService.addContact(req.body);
 
   res.status(201).json(newContact);
 };
 
-const updateContactById = async (req, res, next) => {
+const updateContact = async (req, res, next) => {
   const { contactId } = req.params;
   const updatedContact = await contactsService.updateContact(
     contactId,
@@ -49,7 +49,7 @@ const deleteContactById = async (req, res, next) => {
 module.exports = {
   getAllContacts,
   getContactById,
-  addNewContact,
-  updateContactById,
   deleteContactById,
+  createContact,
+  updateContact,
 };
