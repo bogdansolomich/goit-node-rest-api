@@ -26,14 +26,33 @@ const updateContactById = controllerWrapper(async (req, res, next) => {
     req.body
   );
 
+  if (!updatedContact) {
+    throw HttpError(404, "Not found");
+  }
+
   res.json(updatedContact);
 });
 
+// const updateContactById = async (req, res, next) => {
+//   const { contactId } = req.params;
+//   const updatedContact = await contactsService.updateContact(
+//     contactId,
+//     req.body
+//   );
+
+//   if (!updatedContact) {
+//     throw HttpError(404, "Not found");
+//   }
+
+//   res.json(updatedContact);
+// };
+
 const deleteContactById = controllerWrapper(async (req, res, next) => {
   const { contactId } = req.params;
+  const deletedContact = await contactsService.getContactById(contactId);
   await contactsService.removeContact(contactId);
 
-  res.json({ message: "Contact deleted" });
+  res.json(deletedContact);
 });
 
 export default {
