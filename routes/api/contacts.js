@@ -20,6 +20,7 @@ contactsRouter
   .get(isValidId, contactsControllers.getContactById)
   .delete(isValidId, contactsControllers.deleteContactById)
   .put(
+    isValidId,
     validateBody(updateContactSchema),
     contactsControllers.updateContactById
   );

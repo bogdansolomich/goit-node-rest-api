@@ -28,12 +28,14 @@ const addContact = async (body) => {
 };
 
 const updateContact = async (contactId, body) => {
-  const updatedContact = await Contact.findByIdAndUpdate(contactId, body);
+  const updatedContact = await Contact.findByIdAndUpdate(contactId, body, {
+    new: true,
+  });
   if (!updatedContact) {
     throw new HttpError(404, "Not found");
   }
 
-  return updateContact;
+  return updatedContact;
 };
 
 export default {

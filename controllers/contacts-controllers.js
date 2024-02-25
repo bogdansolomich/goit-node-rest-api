@@ -21,16 +21,16 @@ const addNewContact = controllerWrapper(async (req, res, next) => {
 
 const updateContactById = controllerWrapper(async (req, res, next) => {
   const { contactId } = req.params;
-  const updatedContact = await contactsService.updateContact(
+  const updatedContacts = await contactsService.updateContact(
     contactId,
     req.body
   );
 
-  if (!updatedContact) {
+  if (!updatedContacts) {
     throw HttpError(404, "Not found");
   }
 
-  res.json(updatedContact);
+  res.json(updatedContacts);
 });
 
 // const updateContactById = async (req, res, next) => {
