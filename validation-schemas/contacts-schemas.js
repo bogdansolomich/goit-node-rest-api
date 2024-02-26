@@ -22,10 +22,10 @@ export const addContactSchema = Joi.object({
 
 export const updateContactSchema = Joi.object()
   .keys({
-    name: addContactSchema.extract("name").optional(),
-    email: addContactSchema.extract("email").optional(),
-    phone: addContactSchema.extract("phone"),
-    favorite: addContactSchema.extract("favorite"),
+    name: addContactSchema.extract("name").optional().required(),
+    email: addContactSchema.extract("email").optional().required(),
+    phone: addContactSchema.extract("phone").required(),
+    favorite: addContactSchema.extract("favorite").required(),
   })
   .or("name", "email", "phone", "favorite");
 
