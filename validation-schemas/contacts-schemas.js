@@ -20,17 +20,15 @@ export const addContactSchema = Joi.object({
   }),
 }).or("name", "email", "phone", "favorite");
 
-export const updateContactSchema = Joi.object()
-  .keys({
-    name: addContactSchema.extract("name").optional().required(),
-    email: addContactSchema.extract("email").optional().required(),
-    phone: addContactSchema.extract("phone").required(),
-    favorite: addContactSchema.extract("favorite").required(),
-  })
-  .or("name", "email", "phone", "favorite");
+export const updateContactSchema = Joi.object({
+  name: Joi.string(),
+  email: Joi.string().email(),
+  phone: Joi.string(),
+  favorite: Joi.boolean(),
+})
+  .min(1)
+  .message("Body must have at least one field");
 
-export const contactFavoriteSchema = Joi.object()
-  .keys({
-    favorite: addContactSchema.extract("favorite"),
-  })
-  .or("favorite");
+export const contactFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
