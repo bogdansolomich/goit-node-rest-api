@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRETS } = process.env;
 
 const signUpService = async (body) => {
   const user = await User.findOne({
@@ -40,7 +40,7 @@ const logInService = async (body) => {
     id: user._id,
   };
 
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
+  const token = jwt.sign(payload, JWT_SECRETS, { expiresIn: "24h" });
   await User.findByIdAndUpdate(user._id, { token });
   return { token };
 };
