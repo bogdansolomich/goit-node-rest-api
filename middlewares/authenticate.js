@@ -7,9 +7,11 @@ import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
 const { JWT_SECRET } = process.env;
+console.log(JWT_SECRET);
 
 const authenticate = async (req, res, next) => {
   const { authorization } = req.headers;
+  console.log(authorization);
 
   const [bearer, token] = authorization.split(" ");
   if (bearer !== "Bearer") {
@@ -17,7 +19,9 @@ const authenticate = async (req, res, next) => {
   }
   try {
     const { id } = jwt.verify(token, JWT_SECRET);
+    console.log(id);
     const user = await User.findById(id);
+    console.log(user);
     if (!user.token) {
       throw HttpError(401, "Not authorized");
     }
