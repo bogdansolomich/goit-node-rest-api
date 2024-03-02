@@ -1,26 +1,29 @@
 import express from "express";
-import authControllers from "../../controllers/auth-controllers.js";
-import { validateBody } from "../../decorators/validateBody.js";
-import { authenticate } from "../../middlewares/authenticate.js";
-import {
-  userSignInSchema,
-  userSignUpSchema,
-} from "../../validation-schemas/auth-schemas.js";
+import { authController } from "../../controllers/auth-controllers/index.js";
+import { authenticate, isEmtyBody } from "../../middlewares/index.js";
+import { validateBody } from "../../decorators/index.js";
+import { userSigninSchema, userSignupSchema } from "../../models/User.js";
 
-export const authRouter = express.Router();
+const authRouter = express.Router();
 
 authRouter.post(
   "/register",
-  validateBody(userSignUpSchema),
-  authControllers.signUp
+  isEmtyBody,
+  validateBody(userSignupSchema),
+  authController.signup
 );
 
 authRouter.post(
   "/login",
-  validateBody(userSignInSchema),
-  authControllers.logIn
+  isEmtyBody,
+  validateBody(userSigninSchema),
+  authController.signin
 );
 
-authRouter.get("/current", authenticate, authControllers.getCurrent);
+authRouter.get("/current", authenticate, authController.getCurrent);
 
-authRouter.post("/logout", authenticate, authControllers.signOut);
+authRouter.post("/logout", authenticate, authController.signout);
+
+authRouter.patch("/", authenticate, authController.updateSubscription);
+
+export default authRouter;
