@@ -3,11 +3,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/users.js";
 
-const { SECRET_KEY } = process.env;
+const { JWT_SECRET } = process.env;
+console.log(JWT_SECRET);
 
 const register = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
+  console.log(user);
   if (user) {
     return res.status(409).json({ message: "Email in use" });
   }
@@ -35,7 +37,7 @@ const login = async (req, res) => {
     id: user._id,
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
   res.json({
     token,
@@ -62,7 +64,7 @@ const logout = async (req, res) => {
     message: "Logout success. Content not found",
   });
 };
-
+console.log(logout);
 const patchSubscription = async (req, res) => {
   const { _id } = req.user;
   const { subscription } = req.body;
