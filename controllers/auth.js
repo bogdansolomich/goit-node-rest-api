@@ -3,8 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/users.js";
 
-const { JWT_SECRET } = process.env;
-console.log(JWT_SECRET);
+const { SECRET_KEY } = process.env;
+console.log(SECRET_KEY);
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -37,7 +37,7 @@ const login = async (req, res) => {
     id: user._id,
   };
 
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
   res.json({
     token,
