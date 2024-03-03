@@ -1,19 +1,17 @@
-import mongoose from "mongoose";
-
 import app from "./app.js";
+import { connectDB } from "./db/connectDB.js";
 
-const { DB_HOST, PORT = 3000 } = process.env;
+const { PORT } = process.env;
 
-mongoose
-  .connect(DB_HOST)
-  .then(() => {
+const startServer = async () => {
+  try {
+    await connectDB();
     app.listen(PORT, () => {
-      console.log(
-        `Database connection successful. Use our API on port: ${PORT}`
-      );
+      console.log(`Server is running. Use our API on port: ${PORT}`);
     });
-  })
-  .catch((error) => {
-    console.log(error.message);
-    process.exit(1);
-  });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+startServer();
