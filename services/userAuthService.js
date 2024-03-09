@@ -74,7 +74,7 @@ class UserAuthService {
     await resizedImage.resize(250, 250).writeAsync(oldPath);
 
     await fs.rename(oldPath, newPath);
-    const newAvatarUrl = path.join("public", "avatars", filename);
+    const newAvatarUrl = path.join(400, "avatars", filename);
 
     const avatar = await userModel.findByIdAndUpdate(_id, {
       avatarURL: newAvatarUrl,
