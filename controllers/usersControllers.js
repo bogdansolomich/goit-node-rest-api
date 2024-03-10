@@ -68,6 +68,9 @@ class UsersController {
   });
 
   onChangeAvatar = asyncHandler(async (req, res) => {
+    if (!req.file) {
+      throw HttpError(400, "Send an image");
+    }
     const { _id } = req.user;
     const { path: oldPath, filename } = req.file;
 
