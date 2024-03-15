@@ -2,7 +2,7 @@ const userModel = require("../models/userModel");
 // const HttpError = require("../helpers/HttpError");
 const { HttpError, sendEmail } = require("../helpers/index");
 const bcrypt = require("bcryptjs");
-const { JWT_SECRET, BASE_URL } = process.env;
+const { JWT_SECRET, SENDGRID_API_KEY } = process.env;
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 const fs = require("fs/promises");
@@ -24,7 +24,7 @@ class UserAuthService {
     const verifyEmail = {
       to: email,
       subject: "Verify email",
-      html: `<a target="_blank" href="${BASE_URL}/users/verify/${verificationCode}">Click verify email</a>`,
+      html: `<a target="_blank" href="${SENDGRID_API_KEY}/users/verify/${verificationCode}">Click verify email</a>`,
     };
     await sendEmail(verifyEmail);
     const newUser = await userModel.create({
@@ -123,7 +123,7 @@ class UserAuthService {
     const verifyEmail = {
       to: email,
       subject: "Verify email",
-      html: `<a target="_blank" href="${BASE_URL}/users/verify/${verificationCode}">Click verify email</a>`,
+      html: `<a target="_blank" href="${SENDGRID_API_KEY}/users/verify/${verificationCode}">Click verify email</a>`,
     };
     await sendEmail(verifyEmail);
   };

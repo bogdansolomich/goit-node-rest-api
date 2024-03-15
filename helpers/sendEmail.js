@@ -4,8 +4,8 @@ const nodemailer = require("nodemailer");
 const { UKR_NET_PASSWORD, UKR_NET_EMAIL } = process.env;
 
 const nodemailerConfig = {
-  host: "smtp.ukr.net",
-  port: 465,
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
   secure: true,
   auth: {
     user: UKR_NET_EMAIL,
