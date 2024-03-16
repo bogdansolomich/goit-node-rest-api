@@ -8,7 +8,7 @@ const gravatar = require("gravatar");
 const fs = require("fs/promises");
 const path = require("path");
 const Jimp = require("jimp");
-const { nanoid } = require("nanoid");
+const { uuid } = require("uuid");
 
 const avatarsPath = path.resolve("public", "avatars");
 
@@ -18,7 +18,7 @@ class UserAuthService {
     if (user) {
       throw HttpError(409, "Email in use");
     }
-    const verificationCode = nanoid();
+    const verificationCode = uuid();
     const avatar = gravatar.url(email);
     const hashPassword = await bcrypt.hash(password, 10);
     const verifyEmail = {
