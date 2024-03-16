@@ -1,8 +1,8 @@
-const multer = require("multer");
-const path = require("path");
-// const HttpError = require("../helpers/HttpError");
+import multer from "multer";
+import path from "path";
+import { HttpError } from "../utils/HttpError.js";
 
-const destination = path.resolve("tmp");
+const destination = path.resolve("temp");
 
 const storage = multer.diskStorage({
   destination,
@@ -17,20 +17,15 @@ const limits = {
   fileSize: 5 * 1024 * 1024,
 };
 
-// const fileFilter = (req, file, cb) => {
-//   const extention = file.originalname.split(".").pop();
+const fileFilter = (req, file, cb) => {
+  const extention = file.originalname.split("").pop();
+  if (extention === "exe") {
+    return cb(new HttpError(400, "Invalid file extention"));
+  }
+  cb(null, true);
+};
 
-//   if (extention === "exe") {
-//     return cb(HttpError(400, "Invalid file extention"));
-//   }
-
-//   cb(null, true);
-// };
-
-const upload = multer({
+export const upload = multer({
   storage,
   limits,
-  //   fileFilter,
 });
-
-module.exports = upload;

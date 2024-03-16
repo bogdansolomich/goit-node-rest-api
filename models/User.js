@@ -1,19 +1,15 @@
-const { Schema, model } = require("mongoose");
-const { handleSaveError, preUpdate } = require("./hooks");
-
-const validEmail =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import { Schema, model } from "mongoose";
+import { handleSaveError, preUpdate } from "./hooks.js";
 
 const userSchema = new Schema(
   {
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, "Set password for user"],
     },
     email: {
       type: String,
       required: [true, "Email is required"],
-      match: validEmail,
       unique: true,
     },
     subscription: {
@@ -21,26 +17,31 @@ const userSchema = new Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
+    token: String,
     avatarURL: {
       type: String,
     },
+
     verify: {
       type: Boolean,
       default: false,
     },
-    verificationCode: {
+    verificationToken: {
       type: String,
-    },
-    token: {
-      type: String,
-      default: null,
+      required: [true, "Verify token is required"],
     },
   },
   { versionKey: false, timestamps: true }
 );
 
 userSchema.post("save", handleSaveError);
+
 userSchema.pre("findOneAndUpdate", preUpdate);
+
 userSchema.post("findOneAndUpdate", handleSaveError);
 
-module.exports = model("user", userSchema);
+const User = model("user", userSchema);
+
+export default User;
+
+export { handleSaveError, preUpdate, User };
