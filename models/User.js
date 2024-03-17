@@ -1,11 +1,12 @@
 import { Schema, model } from "mongoose";
-import { handleSaveError, preUpdate } from "./hooks.js";
+import { HandleMongooseError } from "../helpers/index.js";
 
 const userSchema = new Schema(
   {
     password: {
       type: String,
-      required: [true, "Set password for user"],
+      minlength: 6,
+      required: [true, "Password is required"],
     },
     email: {
       type: String,
@@ -17,30 +18,26 @@ const userSchema = new Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
-    token: String,
+    token: {
+      type: String,
+      default: null,
+    },
     avatarURL: {
       type: String,
+      required: true,
     },
-
     verify: {
       type: Boolean,
       default: false,
     },
     verificationToken: {
       type: String,
+      required: [true, "Verify token is required"],
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false }
 );
 
-userSchema.post("save", handleSaveError);
+userSchema.post("save", HandleMongooseError);
 
-userSchema.pre("findOneAndUpdate", preUpdate);
-
-userSchema.post("findOneAndUpdate", handleSaveError);
-
-const User = model("user", userSchema);
-
-export default User;
-
-export { handleSaveError, preUpdate, User };
+export const User = model("user", userSchema);

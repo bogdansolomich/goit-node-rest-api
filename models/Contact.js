@@ -1,17 +1,19 @@
 import { Schema, model } from "mongoose";
-import { handleSaveError, preUpdate } from "./User.js";
+import { HandleMongooseError } from "../helpers/index.js";
 
 const contactSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, "Set name for contact"],
+      required: true,
     },
     email: {
       type: String,
+      required: true,
     },
     phone: {
       type: String,
+      required: true,
     },
     favorite: {
       type: Boolean,
@@ -20,17 +22,11 @@ const contactSchema = new Schema(
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
+      required: true,
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false }
 );
+contactSchema.post("save", HandleMongooseError);
 
-contactSchema.post("save", handleSaveError);
-
-contactSchema.pre("findOneAndUpdate", preUpdate);
-
-contactSchema.post("findOneAndUpdate", handleSaveError);
-
-const Contact = model("contact", contactSchema);
-
-export default Contact;
+export const Contact = model("contact", contactSchema);
