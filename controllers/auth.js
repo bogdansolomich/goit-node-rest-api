@@ -34,14 +34,11 @@ const register = async (req, res) => {
     subject: "Verify email",
     html: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}">Verify email</a>`,
   };
-  try {
-    await sendEmail(mail);
-    return res.status(201).json({
-      message: "Verification email sent",
-    });
-  } catch (error) {
-    return res.status(500).json(error.message);
-  }
+
+  await sendEmail(mail);
+  return res.status(201).json({
+    message: "Verification email sent",
+  });
 
   res.status(201).json({
     users: {
